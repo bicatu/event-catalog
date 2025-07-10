@@ -1,0 +1,56 @@
+{
+  "type": "record",
+  "name": "RedeemPoints",
+  "namespace": "com.loyalty.commands",
+  "doc": "Command to redeem customer points either by point amount or value amount",
+  "fields": [
+    {
+      "name": "customerId",
+      "type": "string",
+      "doc": "Unique identifier for the customer"
+    },
+    {
+      "name": "redemptionType",
+      "type": {
+        "type": "enum",
+        "name": "RedemptionType",
+        "symbols": ["POINTS", "VALUE"]
+      },
+      "doc": "Type of redemption - either by points or by value amount"
+    },
+    {
+      "name": "pointsAmount",
+      "type": ["null", "int"],
+      "default": null,
+      "doc": "Number of points to redeem (required when redemptionType is POINTS)"
+    },
+    {
+      "name": "valueAmount",
+      "type": ["null", "float"],
+      "default": null,
+      "doc": "Value amount to redeem (required when redemptionType is VALUE)"
+    },
+    {
+      "name": "redemptionId",
+      "type": "string",
+      "doc": "Unique identifier for this redemption transaction"
+    },
+    {
+      "name": "timestamp",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      },
+      "doc": "Timestamp when the redemption command was issued"
+    },
+    {
+      "name": "metadata",
+      "type": {
+        "type": "map",
+        "values": "string"
+      },
+      "default": {},
+      "doc": "Additional metadata for the redemption (e.g., source, campaign, etc.)"
+    }
+  ]
+}
