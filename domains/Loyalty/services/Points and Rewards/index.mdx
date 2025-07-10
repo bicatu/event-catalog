@@ -3,4 +3,16 @@ id: PointsAndRewards
 name: Points and Rewards
 description: Manage loyalty points, rewards, and redemption processes.
 version: 1.0.0
+
+receives:
+    - id: RedeemPoints
+      version: 1.0.1
+    - id: GetPointsBalance
+      version: 1.0.0
+    - id: GetTransactionHistory
+      version: 1.0.0
+
+sends:
+    - id: PointsRedeemed
+      version: 1.0.0
 ---
