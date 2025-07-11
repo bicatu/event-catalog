@@ -1,0 +1,210 @@
+asyncapi: 3.0.0
+info:
+  title: Loyalty Domain Events API
+  version: 1.0.0
+  description: |
+    Event-driven API for loyalty domain events.
+    This specification defines the PointsRedeemed event that is published
+    when customers redeem their loyalty points.
+  contact:
+    name: Loyalty Team
+    email: loyalty-team@company.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  production:
+    host: kafka-prod.company.com:9092
+    protocol: kafka
+    description: Production Kafka cluster
+  staging:
+    host: kafka-staging.company.com:9092
+    protocol: kafka
+    description: Staging Kafka cluster
+
+channels:
+  loyalty.events.points.redeemed:
+    address: loyalty.events.points.redeemed
+    description: Channel for points redemption events
+    messages:
+      pointsRedeemed:
+        $ref: '#/components/messages/PointsRedeemed'
+    bindings:
+      kafka:
+        topic: loyalty.events.points.redeemed
+        partitions: 12
+        replicas: 3
+        configs:
+          retention.ms: 604800000  # 7 days
+          cleanup.policy: delete
+
+operations:
+  publishPointsRedeemed:
+    action: send
+    channel:
+      $ref: '#/channels/loyalty.events.points.redeemed'
+    summary: Publish PointsRedeemed event
+    description: |
+      Publishes a PointsRedeemed event when a customer successfully redeems points.
+      This event is triggered after the RedeemPoints command is processed successfully.
+    messages:
+      - $ref: '#/components/messages/PointsRedeemed'
+    bindings:
+      kafka:
+        clientId: loyalty-service
+        groupId: loyalty-publishers
+
+components:
+  messages:
+    PointsRedeemed:
+      name: PointsRedeemed
+      title: Points Redeemed Event
+      summary: Event emitted when customer points are successfully redeemed
+      description: |
+        This event is published when a customer successfully redeems their loyalty points.
+        It contains all the necessary information about the redemption transaction.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/PointsRedeemedPayload'
+      headers:
+        $ref: '#/components/schemas/EventHeaders'
+      examples:
+        - name: Point-based redemption
+          summary: Customer redeems 100 points
+          payload:
+            eventId: "evt_123456789"
+            eventType: "PointsRedeemed"
+            customerId: "cust_987654321"
+            redemptionId: "red_456789123"
+            redemptionType: "POINTS"
+            pointsAmount: 100
+            valueAmount: null
+            rewardType: "DISCOUNT"
+            rewardValue: 10.00
+            currency: "USD"
+            timestamp: "2025-07-10T14:30:00.000Z"
+            source: "mobile-app"
+            metadata:
+              campaignId: "summer2025"
+              channel: "mobile"
+              storeId: "store_001"
+        - name: Value-based redemption
+          summary: Customer redeems $25 worth of points
+          payload:
+            eventId: "evt_987654321"
+            eventType: "PointsRedeemed"
+            customerId: "cust_123456789"
+            redemptionId: "red_789123456"
+            redemptionType: "VALUE"
+            pointsAmount: null
+            valueAmount: 25.00
+            rewardType: "CASHBACK"
+            rewardValue: 25.00
+            currency: "USD"
+            timestamp: "2025-07-10T15:45:00.000Z"
+            source: "web-app"
+            metadata:
+              channel: "web"
+              referralCode: "FRIEND20"
+
+  schemas:
+    PointsRedeemedPayload:
+      type: object
+      description: Payload for PointsRedeemed event
+      required:
+        - eventId
+        - eventType
+        - customerId
+        - redemptionId
+        - redemptionType
+        - rewardType
+        - rewardValue
+        - currency
+        - timestamp
+        - source
+      properties:
+        eventId:
+          type: string
+          description: Unique identifier for this event
+          example: "evt_123456789"
+        eventType:
+          type: string
+          enum: ["PointsRedeemed"]
+          description: Type of event
+        customerId:
+          type: string
+          description: Unique identifier for the customer
+          example: "cust_987654321"
+        redemptionId:
+          type: string
+          description: Unique identifier for the redemption transaction
+          example: "red_456789123"
+        redemptionType:
+          type: string
+          enum: ["POINTS", "VALUE"]
+          description: Type of redemption - either by points or by value amount
+        pointsAmount:
+          type: integer
+          nullable: true
+          description: Number of points redeemed (when redemptionType is POINTS)
+          example: 100
+        valueAmount:
+          type: number
+          format: float
+          nullable: true
+          description: Value amount redeemed (when redemptionType is VALUE)
+          example: 25.50
+        rewardType:
+          type: string
+          enum: ["DISCOUNT", "CASHBACK", "PRODUCT", "GIFT_CARD", "FREE_SHIPPING"]
+          description: Type of reward received
+        rewardValue:
+          type: number
+          format: float
+          description: Monetary value of the reward
+          example: 10.00
+        currency:
+          type: string
+          description: Currency code (ISO 4217)
+          example: "USD"
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp when the redemption occurred
+          example: "2025-07-10T14:30:00.000Z"
+        source:
+          type: string
+          description: Source system or channel that initiated the redemption
+          example: "mobile-app"
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: Additional metadata for the redemption
+          example:
+            campaignId: "summer2025"
+            channel: "mobile"
+            storeId: "store_001"
+
+    EventHeaders:
+      type: object
+      description: Standard event headers
+      properties:
+        messageId:
+          type: string
+          description: Unique message identifier
+        correlationId:
+          type: string
+          description: Correlation identifier for tracing
+        causationId:
+          type: string
+          description: ID of the command that caused this event
+        timestamp:
+          type: string
+          format: date-time
+          description: Message timestamp
+        version:
+          type: string
+          description: Event schema version
+          example: "1.0.0"
