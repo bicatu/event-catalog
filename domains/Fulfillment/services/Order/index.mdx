@@ -1,0 +1,32 @@
+---
+id: Order
+name: Order Management for Fulfillment
+description: Manage order processing, tracking, and fulfillment for customer orders.
+version: 1.9.0
+
+receives:
+    - id: PlaceOrder
+      version: 1.0.0
+    - id: CancelOrder
+      version: 1.0.0
+    - id: UpdateShippingOrderInformation
+      version: 1.0.0
+    - id: CancelOrderItems
+      version: 1.0.0
+    - id: GetOrder
+      version: 1.0.0
+
+sends:
+    - id: OrderPlaced
+      version: 1.0.0
+    - id: OrderCancelled
+      version: 1.0.0
+    - id: ShippingOrderInformationUpdated
+      version: 1.0.0
+    - id: OrderItemsCancelled
+      version: 1.0.0
+    - id: CreateReservation
+    - id: UpdateReservation
+    - id: CancelReservation
+    - id: DetermineShipment
+---

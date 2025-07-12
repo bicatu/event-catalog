@@ -1,0 +1,22 @@
+---
+id: Shipping
+name: Shipping Management for Fulfillment
+description: Manage shipping processes, including label generation and tracking for customer orders and returns.
+version: 1.0.0
+
+receives:
+    - id: DetermineShipment
+      version: 1.0.0
+    - id: CreateShippingLabel
+      version: 1.0.0
+    - id: CancelShippingLabel
+      version: 1.0.0
+
+sends:
+    - id: ShippingLabelCreated
+      version: 1.0.0
+    - id: ShippingLabelCancelled
+      version: 1.0.0
+    - id: ShipmentCreated
+      version: 1.0.0
+---

@@ -1,0 +1,26 @@
+---
+id: Inventory
+name: Inventory Management for Fulfillment
+description: Manage inventory levels and tracks product availability for order fulfillment.
+version: 1.0.0
+
+receives:
+    - id: CreateReservation
+      version: 1.0.0
+    - id: UpdateReservation
+      version: 1.0.0
+    - id: CancelReservation
+      version: 1.0.0
+    - id: GetReservation
+      version: 1.0.0
+    - id: GetStockLevels
+      version: 1.0.0
+
+sends:
+    - id: ReservationCreated
+      version: 1.0.0
+    - id: ReservationUpdated
+      version: 1.0.0
+    - id: ReservationCancelled
+      version: 1.0.0
+---
