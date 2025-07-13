@@ -1,0 +1,23 @@
+---
+id: OrderItem
+name: OrderItem
+version: 1.0.0
+identifier: orderItemId
+summary: Represents a single item within a customer's order.
+
+properties:
+  - name: orderItemId
+    type: UUID
+    required: true
+    description: Unique identifier for the order item
+  - name: orderId
+    type: UUID
+    required: true
+    description: Identifier for the parent Order
+    references: Order
+    relationType: hasOne
+    referencesIdentifier: orderId
+---
+
+### Entity Properties
+<EntityPropertiesTable />

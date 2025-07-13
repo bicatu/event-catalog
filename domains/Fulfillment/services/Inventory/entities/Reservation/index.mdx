@@ -1,0 +1,38 @@
+---
+id: Reservation
+name: Reservation
+version: 1.0.0
+aggregateRoot: true
+summary: |
+  Represents an inventory reservation for a specific product, ensuring stock availability for order fulfillment.
+properties:
+  - name: reservationId
+    type: string
+    description: Unique identifier for the reservation.
+  - name: productId
+    type: string
+    description: Identifier of the product being reserved.
+  - name: quantity
+    type: number
+    description: Quantity of the product reserved.
+  - name: reservedUntil
+    type: string
+    format: date-time
+    description: Timestamp until which the reservation is valid.
+  - name: status
+    type: string
+    enum: [ 'active', 'expired', 'cancelled', 'completed' ]
+    description: Current status of the reservation.
+  - name: referenceId
+    type: string
+    description: reference ID for tracking purposes, such as an order ID.
+
+---
+
+## Overview
+
+The `Reservation` entity represents an inventory reservation for a specific product, ensuring that the stock is available for order fulfillment. It includes details such as the product ID, quantity reserved, validity period, and current status of the reservation.
+
+### Entity Properties
+<EntityPropertiesTable />
+
