@@ -1,7 +1,7 @@
 ---
-id: Warehouse
-name: Warehouse Management System Integration
-description: Integrates with warehouse management systems to manage inventory, order processing, and shipping logistics.
+id: Outbound
+name: Outbound Logistics Management
+description: Manage outbound logistics processes, including order fulfillment, packing, and shipping.
 version: 1.0.0
 
 receives:
@@ -22,4 +22,5 @@ sends:
     - id: DetermineShipment
     - id: CreateShippingLabel
     - id: CancelShippingLabel
+    - id: ShipmentShipped
 ---
