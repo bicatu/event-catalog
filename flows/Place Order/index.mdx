@@ -1,0 +1,39 @@
+---
+id: PlaceOrderFlow
+name: Place Order
+version: 1.0.0
+summary: This flow describes the process of placing an order in the fulfillment system, including the necessary steps and events involved.
+steps:
+  - id: checkout_place_order
+    title: Checkout places an order
+    service: 
+        id: Checkout
+    next_steps:
+        - id: place_order
+
+  - id: place_order
+    title: Place Order
+    message:
+        id: PlaceOrder
+    next_steps:
+        - id: process_place_order
+    
+  - id: process_place_order
+    title: Process Place Order
+    service:
+        id: Order
+    next_steps:
+        - id: order_placed
+
+  - id: order_placed
+    title: Order Placed
+    message:
+        id: OrderPlaced
+    next_steps:
+        - id: create_fulfillment
+  
+  - id: create_fulfillment
+    title: Create Fulfillment
+    service: 
+        id: Outbound
+---
