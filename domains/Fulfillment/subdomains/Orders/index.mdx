@@ -11,3 +11,19 @@ services:
 ---
 
 <NodeGraph/>
+
+## Main Focus
+
+One of the principle focus of the Orders subdomain is to manage the lifecycle of customer orders. Placing an order is the first step in this process, which involves several key steps and events to ensure the order is processed correctly.
+
+```mermaid
+sequenceDiagram
+    participant Checkout as Checkout Service
+    participant Order as Order Service
+    participant Outbound as Outbound Service
+
+    Checkout->>Order: PlaceOrder
+    Order->>Outbound: CreateFulfillmentRequest
+    Outbound->>Order: FulfillmentRequestCreated
+    Order->>Checkout: OrderPlaced
+```
